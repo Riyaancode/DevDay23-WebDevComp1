@@ -8,19 +8,13 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <>
-          <Route path="/" element={<Organization />}>
-            <Route
-              path="/:organisationName/"
-              element={<OrganizationDetails />}
-            />
-
-            <Route
-              path="/:organisationName/:projectName"
-              element={<ProjectDetails />}
-            />
-          </Route>
-        </>
+        <Route path="/" element={<Organization />}>
+          <Route path="/:organisationName/" element={<OrganizationDetails />} />
+        </Route>
+        <Route
+          path="/:organisationName/:projectName"
+          element={<ProjectDetails />}
+        />
       </Routes>
     </BrowserRouter>
   );

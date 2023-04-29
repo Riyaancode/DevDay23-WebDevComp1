@@ -35,11 +35,9 @@ export default function Projects(params) {
                 10th Oct 2022
               </time>
 
-              <a href="/#">
-                <h3 className="mt-0.5 text-lg font-medium text-gray-900">
-                  {item.name}
-                </h3>
-              </a>
+              <h3 className="mt-0.5 text-lg font-medium text-gray-900">
+                {item.name}
+              </h3>
 
               <div className="flex items-center -space-x-2 overflow-hidden">
                 <img
