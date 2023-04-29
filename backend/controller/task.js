@@ -2,10 +2,7 @@ const Task = require("../models/task");
 
 // Add Task
 const addTask = (req, res) => {
-  console.log("ADD TASK WORKING ");
-//   res.send("Add Task Working");
-
-  const taskAdd = new Task({
+  const task = new Task({
     name: req.body.name,
     nature: req.body.nature,
     startDate: req.body.startDate,
@@ -14,7 +11,7 @@ const addTask = (req, res) => {
     status: req.body.status,
     project: req.body.project,
   });
-  taskAdd
+  task
     .save()
     .then((result) => {
       res.status(200).send(result);
