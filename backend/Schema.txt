@@ -1,0 +1,116 @@
+const userSchema = new mongoose.Schema({
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  role: { type: String, enum: ['manager', 'developer'], required: true },
+});
+
+
+const projectSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  key: { type: String, required: true, unique: true },
+  admin: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  members: [{ user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, role: { type: String } }],
+  tasks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Task' }],
+  organization: { type: mongoose.Schema.Types.ObjectId, ref: 'Organization' },
+});
+
+
+const taskSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  nature: { type: String, enum: ['task', 'bug'], required: true },
+  startDate: { type: Date, required: true },
+  endDate: { type: Date, required: true },
+  assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  status: { type: String, enum: ['To Do', 'In Progress', 'Open', 'Done', 'Closed'], default: 'To Do' },
+  project: { type: mongoose.Schema.Types.ObjectId, ref: 'Project', required: true },
+});
+
+
+const organizationSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  members: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+});
+
+
+const workItemSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  description: { type: String },
+  assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  project: { type: mongoose.Schema.Types.ObjectId, ref: 'Project', required: true },
+  board: { type: mongoose.Schema.Types.ObjectId, ref: 'Board' },
+});
+
+
+const boardSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  columns: [{ name: { type: String, required: true }, workItems: [{ type: mongoose.Schema.Types.ObjectId, ref: 'WorkItem' }] }],
+  project: { type: mongoose.Schema.Types.ObjectId, ref: 'Project', required: true },
+});
+
+
+const reportSchema = new mongoose.Schema({
+  project: { type: mongoose.Schema.Types.ObjectId, ref: 'Project', required: true },
+  hoursSpent: { type: Number },
+  tasksGenerated: { type: Number },
+  tasksCompleted: { type: Number },
+  peopleAssigned: { type: Number },
+});
+
+
+
+
+
+
+
+
+import React from 'react';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+
+import Dashboard from './Dashboard';
+import AdminPanel from './AdminPanel';
+import ManagerPanel from './ManagerPanel';
+import DeveloperPanel from './DeveloperPanel';
+
+function App() {
+  const userRole = 'manager'; // replace with user's actual role
+
+  return (
+    <Router>
+      <Switch>
+        <Route exact path="/">
+          <Dashboard />
+        </Route>
+        {userRole === 'administrator' && (
+          <Route path="/admin">
+            <AdminPanel />
+          </Route>
+        )}
+        {userRole === 'manager' && (
+          <Route path="/manager">
+            <ManagerPanel />
+          </Route>
+        )}
+        {userRole === 'developer' && (
+          <Route path="/developer">
+            <DeveloperPanel />
+          </Route>
+        )}
+        {/* Redirect to homepage if user doesn't have a valid role */}
+        <Route>
+          <Redirect to="/" />
+        </Route>
+      </Switch>
+    </Router>
+  );
+}
+
+export default App;
+
+
+
+
+
+
+
