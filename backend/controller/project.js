@@ -98,6 +98,7 @@ const addTaskToProject = async (req, res) => {
     nature: req.body.nature,
     startDate: req.body.startDate,
     endDate: req.body.endDate,
+    assignedTo: req.body.assignedTo
   });
   task
     .save()
