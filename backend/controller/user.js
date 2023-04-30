@@ -24,6 +24,7 @@ const createUser = async (req, res) => {
 let userAuthCheck;
 const signinUser = async (req, res) => {
 
+
   try {
     const user = await User.findOne({
       email: req.body.email,
