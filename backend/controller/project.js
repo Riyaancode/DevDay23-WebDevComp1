@@ -64,6 +64,18 @@ const getProjectByID = async (req, res) => {
   }
 };
 
+// Get all projects by organization ID
+const getAllProjectByOrganizationID = async (req, res) => {
+  try {
+    const projects = await Project.find({
+      organization: req.params.organizationID,
+    });
+    res.json(projects);
+  } catch (error) {
+    res.status(500).json({ message: "Projects not found" });
+  }
+};
+
 // Add a member to a project
 const addMemberToProject = async (req, res) => {
   try {
@@ -98,7 +110,7 @@ const addTaskToProject = async (req, res) => {
     nature: req.body.nature,
     startDate: req.body.startDate,
     endDate: req.body.endDate,
-    assignedTo: req.body.assignedTo
+    assignedTo: req.body.assignedTo,
   });
   task
     .save()
@@ -113,6 +125,7 @@ const addTaskToProject = async (req, res) => {
 module.exports = {
   createProject,
   getAllProjects,
+  getAllProjectByOrganizationID,
   getProjectByID,
   addMemberToProject,
   addTaskToProject,
