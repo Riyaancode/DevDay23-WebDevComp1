@@ -1,9 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-// import { Disclosure, Menu, Transition } from "@headlessui/react";
-// import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import axios from "axios";
 import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
-// import { useAuth } from "../context/AuthProvider";
-// import AvatarMenue from "../components/AvatarMenue";
 
 const ProfileDropDown = (props) => {
   const [state, setState] = useState(false);
@@ -80,19 +77,41 @@ const ProfileDropDown = (props) => {
   );
 };
 
-const organisation = [
-  { name: "GeeksofKolachi" },
-  { name: "CodersofKolachi" },
-  { name: "TechofKolachi" },
-];
+// const organisation = [
+//   {
+//     _id: "644e05ff7a881586fb08954b",
+//     name: "riyan",
+//     members: ["644e0b6c6151ee8e131003ad"],
+//     __v: 1,
+//   },
+//   {
+//     _id: "644e0deb4f9fb735ca5df5f6",
+//     name: "Geeks of Kolachi",
+//     members: ["644e0b6c6151ee8e131003ad", "644e22a0ca859ec4b71ff989"],
+//     __v: 2,
+//   },
+// ];
 
 export default function Organizations() {
   const [menuState, setMenuState] = useState(false);
-  const [activeLink, setActiveLink] = useState(organisation[0].name);
+  const [organisation, setOrganisation] = useState([]);
+  const [activeLink, setActiveLink] = useState(organisation?.[0]?.name);
   const navigate = useNavigate();
   useEffect(() => {
-    navigate(organisation[0].name);
+    // console.log(organisation[0].name);
+    getOrg();
   }, []);
+
+  const getOrg = async () => {
+    try {
+      const res = await axios.get("http://localhost:5001/api/organization/get");
+      console.log(res.data);
+      setOrganisation(res.data);
+      navigate(res.data[0].name, { state: res.data[0] });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // Replace javascript:void(0) path with your path
   const navigation = [
@@ -128,14 +147,17 @@ export default function Organizations() {
               }`}
             >
               <ul className="space-y-5 lg:flex lg:space-x-6 lg:space-y-0 lg:mt-0">
-                {navigation.map((item, idx) => (
-                  <li
-                    key={idx}
+                {console.log(organisation)}
+                {organisation.map((item) => (
+                  <Link
+                    key={item._id}
                     onClick={() => setMenuState(!menuState)}
-                    className="text-gray-600 hover:text-gray-900"
+                    className="text-gray-600 block hover:text-gray-900"
+                    state={item.name}
+                    to={item.name}
                   >
-                    <Link to={item.path}>{item.title}</Link>
-                  </li>
+                    {item.name}
+                  </Link>
                 ))}
               </ul>
               <ProfileDropDown class="mt-5 pt-5 border-t lg:hidden" />
@@ -196,8 +218,8 @@ export default function Organizations() {
               {organisation.map((item) => (
                 <Link
                   to={item.name}
-                  key={item.name}
-                  state={item.name}
+                  key={item._id}
+                  state={item}
                   className={`flex items-center gap-2 px-4 py-2 hover:bg-gray-100 hover:text-blue-700 ${
                     activeLink === item.name
                       ? "bg-gray-200 text-blue-700"
@@ -208,6 +230,18 @@ export default function Organizations() {
                   <span className="text-lg font-medium"> {item.name} </span>
                 </Link>
               ))}
+              <Link
+                to={"/AddOrganization"}
+                // state={""}
+                className={`flex items-center gap-2 px-4 py-2 hover:bg-blue-700 hover:text-gray-100 ${
+                  activeLink === "AddOrganization"
+                    ? "bg-blue-700 text-gray-50"
+                    : " text-white bg-blue-600"
+                }`}
+                onClick={() => setActiveLink("AddOrganization")}
+              >
+                <span className="text-lg font-medium"> Add Organization </span>
+              </Link>
             </nav>
           </div>
         </div>

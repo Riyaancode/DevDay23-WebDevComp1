@@ -1,3 +1,5 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const projects = [
@@ -14,7 +16,26 @@ const projects = [
   { name: "CRM", organisationName: "GeeksofKolachi", path: "crm" },
 ];
 
-export default function Projects(params) {
+export default function Projects({ orgId }) {
+  const [Projects, setProjectsDetails] = useState([]);
+  useEffect(() => {
+    // console.log(Projects[0].name);
+    getOrg();
+  }, []);
+
+  const getOrg = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:5001/api/project/get/organization/${orgId}`
+      );
+      console.log(res.data);
+      setProjectsDetails(res.data);
+      // navigate(res.data[0].name, { state: res.data[0] });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="p-4 grid grid-cols-3">
       {projects.map((item) => (
