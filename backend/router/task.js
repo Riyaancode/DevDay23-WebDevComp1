@@ -15,8 +15,6 @@ app.get("/get/:projectId/:taskId", taskController.getTaskById);
 // Update task status
 app.put("/update/:taskId/status", taskController.updateTaskStatus);
 
-
-
 // e.g: http://localhost:5001/api/task/:projectID/add [POST: please write projectID in params and send task "name", "nature", "startDate", "endDate", "assignedTo(userID)"  to this API]
 // e.g: http://localhost:5001/api/task/get/:projectId   [GET: write projectId in params]
 // e.g: http://localhost:5001/api/task/get/:projectId/:taskId   [GET: write projectId, taskId in params]
