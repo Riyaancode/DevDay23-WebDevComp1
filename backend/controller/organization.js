@@ -32,12 +32,11 @@ const getOrganization = async (req, res) => {
   }
 };
 
-// Get All Organizations
+// Get Specific User Organizations
 const getSpecificUserOrganization = async (req, res) => {
   try {
     const { userId } = req.params;
-    const organizations = await Organization.find({});
-    const organization = organizations.find(org => org.members.some(member => member.toString() === userId));
+    const organization = await Organization.find({ members: userId });
     if (organization.length === 0) {
       return res.status(404).json({ message: "Organization not found for the given member" });
     }
