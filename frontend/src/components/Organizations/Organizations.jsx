@@ -136,7 +136,7 @@ export default function Organizations() {
                 alt="Float UI logo"
               /> */}
               <h2 className="text-2xl font-bold ml-1 text-gray-800 my-auto ">
-                Dynamic Mangement System
+                Dynamic Management System
               </h2>
             </Link>
           </div>
