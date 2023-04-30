@@ -1,11 +1,20 @@
 const express = require("express");
 const app = express();
-const task = require("../controller/task");
+const taskController = require("../controller/task");
 
-// Add task 
-app.post("/add", task.addTask);
+// Create a new task
+app.post("/add", taskController.createTask);
 
-// Get All task
-// app.get("/get/:userID", task.getAllTasks)
+// Get all tasks for a project
+app.get("/get/:projectId", taskController.getAllTasksForProject);
+
+// Get task by id
+app.get("/get/:projectId/:taskId", taskController.getTaskById);
+
+// Update task status
+app.put("/update/:taskId/status", taskController.updateTaskStatus);
+
+
+// e.g: http://localhost:5001/task/add
 
 module.exports = app;

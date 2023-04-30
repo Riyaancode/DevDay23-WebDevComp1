@@ -6,8 +6,7 @@ const taskSchema = new mongoose.Schema({
   startDate: { type: String, required: true },
   endDate: { type: String, required: true },
   assignedTo: {
-    // type: mongoose.Schema.Types.ObjectId,
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
@@ -17,8 +16,7 @@ const taskSchema = new mongoose.Schema({
     default: "To Do",
   },
   project: {
-    // type: mongoose.Schema.Types.ObjectId,
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Project",
     required: true,
   },

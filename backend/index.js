@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const { main } = require("./db/conn");
+const userRoute = require("./router/user");
 const organizationRoute = require("./router/organization");
 const projectRoute = require("./router/project");
 const taskRoute = require("./router/task");
@@ -12,9 +13,9 @@ main();
 app.use(express.json());
 app.use(cors());
 
-// app.use("/api/user", userRoute);
-// app.use("/api/organization", organizationRoute);
-// app.use("/api/project", projectRoute);
+app.use("/api/user", userRoute);
+app.use("/api/organization", organizationRoute);
+app.use("/api/project", projectRoute);
 app.use("/api/task", taskRoute);
 // app.use("/api/board", boardRoute);
 // app.use("/api/workItem", userRoute);
