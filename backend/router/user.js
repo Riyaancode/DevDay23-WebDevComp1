@@ -9,8 +9,11 @@ app.post("/create", userController.createUser);
 app.get("/get", userController.getAllUsers);
 
 // Delete a user by id
-app.delete("/user/:id", userController.deleteUser);
+app.delete("/delete/:userID", userController.deleteUser);
 
-// e.g: http://localhost:5001/api/user/create
+
+// e.g: http://localhost:5001/api/user/create   [POST: send "firstName","lastName","email","password","role" of user to this API]
+// e.g: http://localhost:5001/api/user/get   [GET]
+// e.g: http://localhost:5001/api/user/delete/:userID [DELETE:  userID in params ]
 
 module.exports = app;

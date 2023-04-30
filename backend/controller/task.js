@@ -1,33 +1,7 @@
 const Task = require("../models/task");
 const Project = require("../models/project");
 
-// Create a new task
-const createTask = async (req, res) => {
-  try {
-    const { name, nature, startDate, endDate, assignedTo, projectId } =
-      req.body;
 
-    // Check if project exists
-    const project = await Project.findById(projectId);
-    if (!project) {
-      return res.status(404).json({ message: "Project not found" });
-    }
-
-    const newTask = await new Task({
-      name,
-      nature,
-      startDate,
-      endDate,
-      assignedTo,
-      project: projectId,
-    });
-    const task = await newTask.save();
-    res.status(201).json({ message: "Task created successfully", task });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Something went wrong" });
-  }
-};
 
 // Get all tasks for a project
 const getAllTasksForProject = async (req, res) => {
@@ -90,7 +64,6 @@ const updateTaskStatus = async (req, res) => {
 
 
 module.exports = {
-  createTask,
   getAllTasksForProject,
   getTaskById,
   updateTaskStatus,
