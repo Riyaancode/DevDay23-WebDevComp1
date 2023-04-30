@@ -19,6 +19,37 @@ const createUser = async (req, res) => {
     });
 };
 
+
+// ------------- Signin --------------
+let userAuthCheck;
+const signinUser = async (req, res) => {
+
+  try {
+    const user = await User.findOne({
+      email: req.body.email,
+      password: req.body.password,
+    });
+    console.log("USER: ", user);
+    if (user) {
+      res.send(user);
+      userAuthCheck = user;
+    } else {
+      res.status(401).send("Invalid Credentials");
+      userAuthCheck = null;
+    }
+  } catch (error) {
+    console.log(error);
+    res.send(error);
+  }
+};
+
+// Getting User Details of login user
+const checkSigninUser = (req, res) => {
+  console.log("userAuth; ", userAuthCheck)
+  res.send(userAuthCheck);
+};
+// ------------------------------------
+
 // Get all Registered users
 const getAllUsers = async (req, res) => {
   try {
@@ -29,6 +60,8 @@ const getAllUsers = async (req, res) => {
     res.status(500).json({ message: "Something went wrong" });
   }
 };
+
+
 
 // Delete a user by id
 const deleteUser = async (req, res) => {
@@ -46,4 +79,4 @@ const deleteUser = async (req, res) => {
   }
 };
 
-module.exports = { createUser, getAllUsers, deleteUser };
+module.exports = { createUser, signinUser, checkSigninUser, getAllUsers, deleteUser };
