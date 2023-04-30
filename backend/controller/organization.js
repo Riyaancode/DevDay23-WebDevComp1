@@ -28,7 +28,23 @@ const getOrganization = async (req, res) => {
     res.status(200).json(organization);
   } catch (err) {
     console.log(err);
-    res.json(err);
+    res.status(500).json(err);
+  }
+};
+
+// Get All Organizations
+const getSpecificUserOrganization = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const organizations = await Organization.find({});
+    const organization = organizations.find(org => org.members.some(member => member.toString() === userId));
+    if (organization.length === 0) {
+      return res.status(404).json({ message: "Organization not found for the given member" });
+    }
+    res.status(200).json(organization);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
   }
 };
 
@@ -81,6 +97,7 @@ const removeMemberFromOrganization = async (req, res) => {
 module.exports = {
   addOrganization,
   getOrganization,
+  getSpecificUserOrganization,
   addMemberToOrganization,
   removeMemberFromOrganization,
 };
