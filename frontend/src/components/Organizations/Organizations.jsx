@@ -246,7 +246,7 @@ export default function Organizations() {
           </div>
         </div>
 
-        <div className="mx-auto overflow-auto p-4 w-full bg-gray-100">
+        <div className="mx-auto overflow-auto p-4 w-full bg-gray-50">
           <Outlet />
         </div>
       </div>

@@ -1,15 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import Projects from "../Projects/Projects";
 import axios from "axios";
+import MyWorkItems from "../Projects/MyWorkItems";
 
 export default function OrganizationDetails(params) {
   const org = useLocation().state;
   const [open, setOpen] = useState(false);
 
+  useEffect(() => {
+    setActiveTab({
+      label: "Project",
+      children: <Projects orgId={org._id} open={() => setOpen(true)} />,
+    });
+  }, [org]);
+
   const [activeTab, setActiveTab] = useState({
     label: "Project",
-    children: <Projects />,
+    children: <Projects orgId={org._id} open={() => setOpen(true)} />,
   });
   const Tab = ({ label, onClick, children }) => {
     return (
@@ -51,7 +59,7 @@ export default function OrganizationDetails(params) {
       console.log(project);
       try {
         const res = await axios.post(
-          "http://localhost:5001/api/project/adds",
+          "http://localhost:5001/api/project/add",
           project
         );
         console.log(res.data);
@@ -59,6 +67,7 @@ export default function OrganizationDetails(params) {
         setProjectDetails({ name: "" });
 
         alert("successful insert");
+        setOpen(false);
       } catch (error) {
         alert(error.response.data.error);
 
@@ -144,23 +153,17 @@ export default function OrganizationDetails(params) {
       {open && <AddProjectModal />}
       <div className="flex justify-between">
         <h1 className="text-lg font-bold">{org.name}</h1>
-        <div className="items-center flex">
-          <button
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2"
-            type="button"
-            onClick={() => setOpen(true)}
-          >
-            Add Project
-          </button>
-        </div>
       </div>
       <div>
         <Tabs
           tabs={[
-            { label: "Project", children: <Projects orgId={org._} /> },
+            {
+              label: "Project",
+              children: <Projects orgId={org._id} open={() => setOpen(true)} />,
+            },
             {
               label: "My work item",
-              children: <div>This is the Work tab.</div>,
+              children: <MyWorkItems />,
             },
           ]}
         />
